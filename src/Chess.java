@@ -1,3 +1,5 @@
+// package chess
+
 public class Chess {
     
     enum Player { white, black }
