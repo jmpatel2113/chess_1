@@ -65,6 +65,10 @@ public class Board {
         return board[square.getRank() - 1][square.getFile() - 'a'];
     }
 
+    public Piece getPiece(String square) {
+        return getPiece(Square.convertSquare(square));
+    }
+
     public void setPiece(Square square, Piece piece) {
         board[square.getRank() - 1][square.getFile() - 'a'] = piece;
     }

@@ -39,4 +39,12 @@ public class Pawn extends Piece {
         return color.equals(Constants.WHITE) ? 'P' : 'p';
     }
 
+    public boolean setEnPassant(boolean enPassant) {
+        return false;
+    }
+
+    public boolean isEnPassant() {
+        return false;
+    }   
+
 }

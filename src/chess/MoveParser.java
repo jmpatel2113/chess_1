@@ -2,10 +2,17 @@ package chess;
 
 public class MoveParser {
     
-    public static Move parseMove(String move) {
-        Square src = Square.convertSquare(move.substring(0, 2));
-        Square dest = Square.convertSquare(move.substring(2));
-        return new Move(src, dest);
+    public static String parseMove(String move, Board board) {
+        if (isCastlingMove(move, board)) {
+            return "castling";
+        }
+        if (isEnPassantMove(move, board)) {
+            return "en passant";
+        }
+        if (isCaptureMove(move, board)) {
+            return "capture";
+        }
+        return "normal";
     }
     
     public static boolean isValidMove(String move) {
