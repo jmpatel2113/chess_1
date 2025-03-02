@@ -1,4 +1,4 @@
-// package chess;
+package chess;
 
 public class Square {
     
@@ -7,6 +7,11 @@ public class Square {
 
     public Square(char file, int rank) {
         this.file = file;
+        this.rank = rank;
+    }
+
+    public Square(int file, int rank) {
+        this.file = (char) file;
         this.rank = rank;
     }
 

@@ -1,3 +1,4 @@
+package chess;
 // package chess;
 
 public class Constants {
