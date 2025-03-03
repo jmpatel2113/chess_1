@@ -8,6 +8,13 @@ class ReturnPiece {
     PieceType pieceType;
     PieceFile pieceFile;
     int pieceRank;  // 1..8
+
+    public ReturnPiece(PieceType pieceType, PieceFile pieceFile, int pieceRank) {
+        this.pieceType = pieceType;
+        this.pieceFile = pieceFile;
+        this.pieceRank = pieceRank;
+    }
+    
     public String toString() {
         return ""+pieceFile+pieceRank+":"+pieceType;
     }
