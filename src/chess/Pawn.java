@@ -35,8 +35,8 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public char getSymbol() {
-        return color.equals(Constants.WHITE) ? 'P' : 'p';
+    public String getSymbol() {
+        return color.equals(Constants.WHITE) ? "bp" : "wp";
     }
 
     public boolean setEnPassant(boolean enPassant) {

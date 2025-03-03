@@ -1,8 +1,4 @@
 package chess;
-<<<<<<< HEAD
-// package chess;
-=======
->>>>>>> alternative-branch
 
 public class Constants {
     

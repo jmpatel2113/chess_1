@@ -2,18 +2,24 @@ package chess;
 
 public class MoveParser {
     
-    public static String parseMove(String move, Board board) {
-        if (isCastlingMove(move, board)) {
-            return "castling";
-        }
-        if (isEnPassantMove(move, board)) {
-            return "en passant";
-        }
-        if (isCaptureMove(move, board)) {
-            return "capture";
-        }
-        return "normal";
-    }
+    // public static String parseMove(String move) {
+    //     move = move.trim();
+
+    //     // resign
+    //     if (move.equals("resign")) {
+    //         return "resign";
+    //     }
+
+    //     if(move.endsWith("draw?")) {
+    //         return "draw?";
+    //     }
+
+    //     if(move.matches("[a-h][1-8] [a-h][1-8]")) {
+    //         return move;
+    //     }
+
+    //     String[] moveParts = move.split(" ");
+    // }
     
     public static boolean isValidMove(String move) {
         if (move.length() != 4) {
