@@ -35,12 +35,13 @@ public class Chess {
     public static ReturnPlay play(String move) {
         
         // System.out.println("Move received: " + move);
-
+        // problem 1: currentPlayer outputs null for some reason
+        // problem 2: we are moving type Piece on the board, but when we want to get that piece we need ReturnPiece type
+        
         move = move.trim();
-
+        ReturnPlay result = new ReturnPlay();
         // empty input
         if (move.isEmpty()) {
-            ReturnPlay result = new ReturnPlay();
             result.message = ReturnPlay.Message.ILLEGAL_MOVE;
             return result;  // Return illegal move if empty input
         }
@@ -48,12 +49,10 @@ public class Chess {
         // resign
         if (move.equalsIgnoreCase("resign")) {
             if(currentPlayer == Player.white){
-                ReturnPlay result = new ReturnPlay();
                 result.message = ReturnPlay.Message.RESIGN_BLACK_WINS;
                 return result;
             }
             else{
-                ReturnPlay result = new ReturnPlay();
                 result.message = ReturnPlay.Message.RESIGN_WHITE_WINS;
                 return result;
             }
@@ -68,7 +67,6 @@ public class Chess {
             int toRow = Character.getNumericValue(parts[1].charAt(1)) - 1;
             int toCol = parts[1].charAt(0) - 'a';
             board.movePiece(fromRow, fromCol, toRow, toCol, currentPlayer);
-            ReturnPlay result = new ReturnPlay();
             result.message = ReturnPlay.Message.DRAW;
             return result;
         }
