@@ -1,4 +1,5 @@
 package chess;
+<<<<<<< HEAD
 // package chess;
 
 import java.util.ArrayList;
@@ -15,6 +16,19 @@ public class Chess {
 
     enum Player { white, black }
     
+=======
+
+import java.util.ArrayList;
+
+import chess.Chess.Player;
+
+public class Chess {
+    private static ReturnPiece[][] board;
+
+    enum Player { white, black }
+    
+    private static Player currentPlayer = Player.white;
+>>>>>>> alternative-branch
     
     /**
      * Plays the next move for whichever player has the turn.
@@ -84,6 +98,7 @@ public class Chess {
         /* FILL IN THIS METHOD */
         board = new ReturnPiece[8][8];
 
+<<<<<<< HEAD
         // Initialize pieces (as you did before)
         board[0][0] = new ReturnPiece(ReturnPiece.PieceType.WR, ReturnPiece.PieceFile.a, 1);
         board[0][1] = new ReturnPiece(ReturnPiece.PieceType.WN, ReturnPiece.PieceFile.b, 1);
@@ -110,11 +125,42 @@ public class Chess {
         for (int i = 0; i < 8; i++) {
             board[6][i] = new ReturnPiece(ReturnPiece.PieceType.BP, ReturnPiece.PieceFile.values()[i], 7);
         }
+=======
+    // Initialize pieces (as you did before)
+    board[0][0] = new ReturnPiece(ReturnPiece.PieceType.WR, ReturnPiece.PieceFile.a, 1);
+    board[0][1] = new ReturnPiece(ReturnPiece.PieceType.WN, ReturnPiece.PieceFile.b, 1);
+    board[0][2] = new ReturnPiece(ReturnPiece.PieceType.WB, ReturnPiece.PieceFile.c, 1);
+    board[0][3] = new ReturnPiece(ReturnPiece.PieceType.WQ, ReturnPiece.PieceFile.d, 1);
+    board[0][4] = new ReturnPiece(ReturnPiece.PieceType.WK, ReturnPiece.PieceFile.e, 1);
+    board[0][5] = new ReturnPiece(ReturnPiece.PieceType.WB, ReturnPiece.PieceFile.f, 1);
+    board[0][6] = new ReturnPiece(ReturnPiece.PieceType.WN, ReturnPiece.PieceFile.g, 1);
+    board[0][7] = new ReturnPiece(ReturnPiece.PieceType.WR, ReturnPiece.PieceFile.h, 1);
+
+    for (int i = 0; i < 8; i++) {
+        board[1][i] = new ReturnPiece(ReturnPiece.PieceType.WP, ReturnPiece.PieceFile.values()[i], 2);
+    }
+
+    board[7][0] = new ReturnPiece(ReturnPiece.PieceType.BR, ReturnPiece.PieceFile.a, 8);
+    board[7][1] = new ReturnPiece(ReturnPiece.PieceType.BN, ReturnPiece.PieceFile.b, 8);
+    board[7][2] = new ReturnPiece(ReturnPiece.PieceType.BB, ReturnPiece.PieceFile.c, 8);
+    board[7][3] = new ReturnPiece(ReturnPiece.PieceType.BQ, ReturnPiece.PieceFile.d, 8);
+    board[7][4] = new ReturnPiece(ReturnPiece.PieceType.BK, ReturnPiece.PieceFile.e, 8);
+    board[7][5] = new ReturnPiece(ReturnPiece.PieceType.BB, ReturnPiece.PieceFile.f, 8);
+    board[7][6] = new ReturnPiece(ReturnPiece.PieceType.BN, ReturnPiece.PieceFile.g, 8);
+    board[7][7] = new ReturnPiece(ReturnPiece.PieceType.BR, ReturnPiece.PieceFile.h, 8);
+
+    for (int i = 0; i < 8; i++) {
+        board[6][i] = new ReturnPiece(ReturnPiece.PieceType.BP, ReturnPiece.PieceFile.values()[i], 7);
+    }
+>>>>>>> alternative-branch
         currentPlayer = Player.white; // Reset the turn to white
         System.out.println("New chess game started! White goes first.");
         printBoard();
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> alternative-branch
     public static void printBoard() {
         for (int row = 7; row >= 0; row--) {
             for (int col = 0; col < 8; col++) {
@@ -137,5 +183,9 @@ public class Chess {
         }
         // Finally, print file labels
         System.out.println(" a  b  c  d  e  f  g  h");
+<<<<<<< HEAD
     }
+=======
+}
+>>>>>>> alternative-branch
 }
