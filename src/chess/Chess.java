@@ -15,13 +15,13 @@ import chess.ReturnPlay.Message;
 public class Chess {
 
     enum Player { white, black }
-    private static Board board;
-    private static Player currentPlayer;
+    public static Board board;
+    public static Player currentPlayer;
 
-    // public Chess() {
-    //     board = new Board();
-    //     currentPlayer = Player.white;
-    // }
+    public Chess() {
+        board = new Board();
+        currentPlayer = Player.white;
+    }
     
     /**
      * Plays the next move for whichever player has the turn.
@@ -35,14 +35,20 @@ public class Chess {
     public static ReturnPlay play(String move) {
         
         // System.out.println("Move received: " + move);
-        // problem 1: currentPlayer outputs null for some reason
         // problem 2: we are moving type Piece on the board, but when we want to get that piece we need ReturnPiece type
         
         move = move.trim();
         ReturnPlay result = new ReturnPlay();
+        
         // empty input
         if (move.isEmpty()) {
             result.message = ReturnPlay.Message.ILLEGAL_MOVE;
+            result.piecesOnBoard = new ArrayList<>();
+            ReturnPiece empty = new ReturnPiece();
+            empty.pieceType = ReturnPiece.PieceType.WP;
+            empty.pieceFile = ReturnPiece.PieceFile.a;
+            empty.pieceRank = 1;
+            result.piecesOnBoard.add(empty);
             return result;  // Return illegal move if empty input
         }
 
@@ -70,50 +76,47 @@ public class Chess {
             result.message = ReturnPlay.Message.DRAW;
             return result;
         }
-
-
+        
         // Simple move parsing (assumes input is valid)
         String[] parts = move.split(" ");
         if (parts.length != 2) {
-            System.out.println("Invalid move format! Use 'e2 e4'.");
+            System.out.println("Invalid move format! Use 'e2 e4' format.");
             ReturnPlay invalidMove = new ReturnPlay();
             invalidMove.message = ReturnPlay.Message.ILLEGAL_MOVE;
             return invalidMove;
         }
 
-        int fromRow = Character.getNumericValue(parts[0].charAt(1)) - 1;
-        int fromCol = parts[0].charAt(0) - 'a';
-        int toRow = Character.getNumericValue(parts[1].charAt(1)) - 1;
-        int toCol = parts[1].charAt(0) - 'a';
+        int fromRow = 8-(Character.getNumericValue(parts[0].charAt(1)));   // fromRank
+        int fromCol = parts[0].charAt(0) - 'a';                            // fromFile
+        int toRow = 8-(Character.getNumericValue(parts[1].charAt(1)));     // toRank
+        int toCol = parts[1].charAt(0) - 'a';                              // toFile   
 
-        if (board.getPiece(fromCol, fromCol) == null) {
+        if (board.getPiece(fromRow, fromCol) == null) {
             System.out.println("No piece at that position!");
             ReturnPlay invalidMove = new ReturnPlay();
             invalidMove.message = ReturnPlay.Message.ILLEGAL_MOVE;
             return invalidMove;
         }
-
+        
         // Move the piece
         board.setPiece(fromRow, fromCol, toRow, toCol);
         board.setPieceToNull(toRow, toCol);
-
+        
         // Swap turns
         currentPlayer = (currentPlayer == Player.white) ? Player.black : Player.white;
         System.out.println("It is now " + currentPlayer + "'s turn.");
         
-        // printBoard(); // Show updated board
-
-        ReturnPlay result = new ReturnPlay();
         result.piecesOnBoard = new ArrayList<>();
 
-        // for (int row = 0; row < 8; row++) {
-        //     for (int col = 0; col < 8; col++) {
-        //         if (board.getPiece(row, col) != null) {
-        //             ReturnPiece piece = board.getPiece(row, col);
-        //             result.piecesOnBoard.add(piece);
-        //         }
-        //     }
-        // }
+        for (int row= 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board.getPiece(row, col);
+                if (piece != null) {
+                // Convert Piece to ReturnPiece using the helper method
+                result.piecesOnBoard.add(board.convertPieceToReturnPiece(piece));
+                }
+            }
+        }
         
         return result;
     }
@@ -123,38 +126,18 @@ public class Chess {
      */
     public static void start() {
         /* FILL IN THIS METHOD */
-        Board board = new Board();
+        board = new Board();
 
         // Initialize pieces (as you did before)
         board.initializeBoard();
 
-        Player currentPlayer = Player.white; // Reset the turn to white
+        currentPlayer = Player.white; // Reset the turn to white
+       
         // need to resent any en passant square, castling rights, pawn promotions
+       
         System.out.println("New chess game started! White goes first.");
-        // board.printBoard();
+        
+        board.printBoard();
     }
 
-    // public static void printBoard(Board board) {
-    //     for (int row = 7; row >= 0; row--) {
-    //         for (int col = 0; col < 8; col++) {
-    //             if (board[row][col] != null) {
-    //                 // Print piece using its toString() (e.g., "bR", "wQ")
-    //                 System.out.print(board[row][col].toString() + " ");
-    //             } else {
-    //                 // Print "##" for dark squares or "  " for light squares
-    //                 if ((row + col) % 2 == 0) {
-    //                     // Light square
-    //                     System.out.print("   "); // 3 spaces
-    //                 } else {
-    //                     // Dark square
-    //                     System.out.print("## ");
-    //                 }
-    //             }
-    //         }
-    //         // Print the rank label at the end of each row
-    //         System.out.println(" " + (row + 1));
-    //     }
-    //     // Finally, print file labels
-    //     System.out.println(" a  b  c  d  e  f  g  h");
-    // }
 }
