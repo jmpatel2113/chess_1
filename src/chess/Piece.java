@@ -19,7 +19,7 @@ public abstract class Piece {
     }
 
     public abstract boolean isValidMove(Square src, Square dest, Board board);
-    public abstract char getSymbol();
+    public abstract String getSymbol();
 
     protected boolean isInsideBoard(Square square) {
         return square.getFile() >= 'a' && square.getFile() <= 'h' && square.getRank() >= 1 && square.getRank() <= 8;

@@ -1,7 +1,6 @@
 package chess;
+
 public class King extends Piece{
-    private String color;
-    private String position;
 
     public King(String color, String position) {
         super(color, position);
@@ -29,7 +28,7 @@ public class King extends Piece{
         return false;
     }
 
-    public char getSymbol() {
-        return (this.color.equals(Constants.WHITE)) ? 'K' : 'k';
+    public String getSymbol() {
+        return color.equals(Constants.WHITE) ? "wK" : "bK";
 }
 }

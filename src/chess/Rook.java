@@ -31,8 +31,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public char getSymbol() {
-        // Return an uppercase symbol for white, lowercase for black.
-        return (this.color.equals(Constants.WHITE)) ? 'R' : 'r';
+    public String getSymbol() {
+        return color.equals(Constants.WHITE) ? "wR" : "bR";
     }
 }

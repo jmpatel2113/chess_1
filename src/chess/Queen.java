@@ -35,8 +35,8 @@ public class Queen extends Piece {
     }
 
     @Override
-    public char getSymbol() {
+    public String getSymbol() {
         // Return an uppercase symbol for white, lowercase for black.
-        return (this.color.equals(Constants.WHITE)) ? 'Q' : 'q';
+        return (this.color.equals(Constants.WHITE)) ? "wQ" : "bQ";
     }
 }
