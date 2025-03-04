@@ -69,6 +69,7 @@ public class PlayChess {
 	static void printPiecesOnBoard(
 			ArrayList<ReturnPiece> pieces, String[][] board) {
 		for (ReturnPiece rp: pieces) {
+			// System.out.println(rp.pieceRank + " " + rp.pieceFile + " " + rp.pieceType);
 			int file = (""+rp.pieceFile).charAt(0) - 'a';
 			String pieceStr = "" + rp.pieceType;
 			String ppstr = "";

@@ -28,6 +28,6 @@ public class King extends Piece{
     }
 
     public String getSymbol() {
-        return (this.color.equals(Constants.WHITE)) ? "bK" : "wK";
+        return (this.color.equals(Constants.WHITE)) ? "wK" : "bK";
 }
 }

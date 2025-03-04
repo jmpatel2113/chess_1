@@ -25,7 +25,7 @@ public class Knight extends Piece {
 
     @Override
     public String getSymbol() {
-        return color.equals(Constants.WHITE) ? "bN" : "wN";
+        return color.equals(Constants.WHITE) ? "wN" : "bN";
     }
 
 }

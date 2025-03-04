@@ -33,6 +33,6 @@ public class Rook extends Piece {
     @Override
     public String getSymbol() {
         // Return an rook symbol for white and black
-        return (this.color.equals(Constants.WHITE)) ? "bR" : "wR";
+        return (this.color.equals(Constants.WHITE)) ? "wR" : "bR";
     }
 }

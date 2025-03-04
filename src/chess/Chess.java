@@ -86,11 +86,11 @@ public class Chess {
             return invalidMove;
         }
 
-        int fromRow = 8-(Character.getNumericValue(parts[0].charAt(1)));   // fromRank
+        int fromRow = Character.getNumericValue(parts[0].charAt(1)) - 1;     // fromRank
         int fromCol = parts[0].charAt(0) - 'a';                            // fromFile
-        int toRow = 8-(Character.getNumericValue(parts[1].charAt(1)));     // toRank
+        int toRow = Character.getNumericValue(parts[1].charAt(1)) - 1;       // toRank
         int toCol = parts[1].charAt(0) - 'a';                              // toFile   
-
+        System.out.println(fromRow + " " + fromCol + " " + toRow + " " + toCol);
         if (board.getPiece(fromRow, fromCol) == null) {
             System.out.println("No piece at that position!");
             ReturnPlay invalidMove = new ReturnPlay();
@@ -112,8 +112,10 @@ public class Chess {
             for (int col = 0; col < 8; col++) {
                 Piece piece = board.getPiece(row, col);
                 if (piece != null) {
-                // Convert Piece to ReturnPiece using the helper method
-                result.piecesOnBoard.add(board.convertPieceToReturnPiece(piece));
+                    // System.out.println(piece.position);
+                    // Convert Piece to ReturnPiece using the helper method
+                    result.piecesOnBoard.add(board.convertPieceToReturnPiece(piece));
+                    // System.out.println(result.piecesOnBoard.get(result.piecesOnBoard.size() - 1));
                 }
             }
         }

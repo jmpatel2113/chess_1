@@ -9,6 +9,25 @@ public class Board {
     }
 
     public void initializeBoard() {
+        // Initialize WHITE pieces at the BOTTOM (rows 6-7, printed as ranks 1-2)
+        board[7][0] = new Rook(Constants.WHITE, "a1");
+        board[7][1] = new Knight(Constants.WHITE, "b1");
+        board[7][2] = new Bishop(Constants.WHITE, "c1");
+        board[7][3] = new Queen(Constants.WHITE, "d1");
+        board[7][4] = new King(Constants.WHITE, "e1");
+        board[7][5] = new Bishop(Constants.WHITE, "f1");
+        board[7][6] = new Knight(Constants.WHITE, "g1");
+        board[7][7] = new Rook(Constants.WHITE, "h1");
+        board[6][0] = new Pawn(Constants.WHITE, "a2");
+        board[6][1] = new Pawn(Constants.WHITE, "b2");
+        board[6][2] = new Pawn(Constants.WHITE, "c2");
+        board[6][3] = new Pawn(Constants.WHITE, "d2");
+        board[6][4] = new Pawn(Constants.WHITE, "e2");
+        board[6][5] = new Pawn(Constants.WHITE, "f2");
+        board[6][6] = new Pawn(Constants.WHITE, "g2");
+        board[6][7] = new Pawn(Constants.WHITE, "h2");
+    
+        // Initialize BLACK pieces at the TOP (rows 0-1, printed as ranks 8-7)
         board[0][0] = new Rook(Constants.BLACK, "a8");
         board[0][1] = new Knight(Constants.BLACK, "b8");
         board[0][2] = new Bishop(Constants.BLACK, "c8");
@@ -25,24 +44,6 @@ public class Board {
         board[1][5] = new Pawn(Constants.BLACK, "f7");
         board[1][6] = new Pawn(Constants.BLACK, "g7");
         board[1][7] = new Pawn(Constants.BLACK, "h7");
-        
-        board[6][0] = new Pawn(Constants.WHITE, "a2");
-        board[6][1] = new Pawn(Constants.WHITE, "b2");
-        board[6][2] = new Pawn(Constants.WHITE, "c2");
-        board[6][3] = new Pawn(Constants.WHITE, "d2");
-        board[6][4] = new Pawn(Constants.WHITE, "e2");
-        board[6][5] = new Pawn(Constants.WHITE, "f2");
-        board[6][6] = new Pawn(Constants.WHITE, "g2");
-        board[6][7] = new Pawn(Constants.WHITE, "h2");
-        board[7][0] = new Rook(Constants.WHITE, "a1");
-        board[7][1] = new Knight(Constants.WHITE, "b1");
-        board[7][2] = new Bishop(Constants.WHITE, "c1");
-        board[7][3] = new Queen(Constants.WHITE, "d1");
-        board[7][4] = new King(Constants.WHITE, "e1");
-        board[7][5] = new Bishop(Constants.WHITE, "f1");
-        board[7][6] = new Knight(Constants.WHITE, "g1");
-        board[7][7] = new Rook(Constants.WHITE, "h1");
-
     }
 
     public void printBoard() {
@@ -91,9 +92,10 @@ public class Board {
         char fileChar = pos.charAt(0); // e.g., 'e'
         
         int rank = Integer.parseInt(pos.substring(1)); // e.g., 2
-        
-        // Set the rank directly rp.pieceRank = rank;
-        
+
+        // Set the rank directly 
+        rp.pieceRank = rank;
+        rp.pieceFile = ReturnPiece.PieceFile.valueOf(String.valueOf(fileChar));
         // Convert the file char into the corresponding enum.
         
         // Assuming the enum constants in ReturnPiece. PieceFile match the letter exactly. rp.pieceFile ReturnPiece. PieceFile.valueOf(String.valueOf(fileChar));
@@ -101,10 +103,10 @@ public class Board {
         // Get the piece symbol. For example, "wR" means white rook.
         
         // Convert to uppercase so that it matches the enum constant (e.g., "R")
-        
+        System.out.print(piece.color + " ");
         String sym = piece.getSymbol().toUpperCase(); // e.g., "WR" or "WP"
-        
-        rp.pieceType = ReturnPiece. PieceType.valueOf(sym);
+        System.out.println(sym);
+        rp.pieceType = ReturnPiece.PieceType.valueOf(sym);
         
         return rp;
         
