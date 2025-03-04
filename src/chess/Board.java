@@ -1,6 +1,5 @@
 package chess;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Board {
@@ -13,39 +12,39 @@ public class Board {
 
     // initializes the board with the pieces
     public void initializeBoard() {
-        board[0][0] = new Rook(Constants.WHITE, "a1");
-        board[0][1] = new Knight(Constants.WHITE, "b1");
-        board[0][2] = new Bishop(Constants.WHITE, "c1");
-        board[0][3] = new Queen(Constants.WHITE, "d1");
-        board[0][4] = new King(Constants.WHITE, "e1");
-        board[0][5] = new Bishop(Constants.WHITE, "f1");
-        board[0][6] = new Knight(Constants.WHITE, "g1");
-        board[0][7] = new Rook(Constants.WHITE, "h1");
-        board[1][0] = new Pawn(Constants.WHITE, "a2");
-        board[1][1] = new Pawn(Constants.WHITE, "b2");
-        board[1][2] = new Pawn(Constants.WHITE, "c2");
-        board[1][3] = new Pawn(Constants.WHITE, "d2");
-        board[1][4] = new Pawn(Constants.WHITE, "e2");
-        board[1][5] = new Pawn(Constants.WHITE, "f2");
-        board[1][6] = new Pawn(Constants.WHITE, "g2");
-        board[1][7] = new Pawn(Constants.WHITE, "h2");
+        board[0][0] = new Rook(Constants.BLACK, "a1");
+        board[0][1] = new Knight(Constants.BLACK, "b1");
+        board[0][2] = new Bishop(Constants.BLACK, "c1");
+        board[0][3] = new Queen(Constants.BLACK, "d1");
+        board[0][4] = new King(Constants.BLACK, "e1");
+        board[0][5] = new Bishop(Constants.BLACK, "f1");
+        board[0][6] = new Knight(Constants.BLACK, "g1");
+        board[0][7] = new Rook(Constants.BLACK, "h1");
+        board[1][0] = new Pawn(Constants.BLACK, "a2");
+        board[1][1] = new Pawn(Constants.BLACK, "b2");
+        board[1][2] = new Pawn(Constants.BLACK, "c2");
+        board[1][3] = new Pawn(Constants.BLACK, "d2");
+        board[1][4] = new Pawn(Constants.BLACK, "e2");
+        board[1][5] = new Pawn(Constants.BLACK, "f2");
+        board[1][6] = new Pawn(Constants.BLACK, "g2");
+        board[1][7] = new Pawn(Constants.BLACK, "h2");
 
-        board[6][0] = new Pawn(Constants.BLACK, "a7");
-        board[6][1] = new Pawn(Constants.BLACK, "b7");
-        board[6][2] = new Pawn(Constants.BLACK, "c7");
-        board[6][3] = new Pawn(Constants.BLACK, "d7");
-        board[6][4] = new Pawn(Constants.BLACK, "e7");
-        board[6][5] = new Pawn(Constants.BLACK, "f7");
-        board[6][6] = new Pawn(Constants.BLACK, "g7");
-        board[6][7] = new Pawn(Constants.BLACK, "h7");
-        board[7][0] = new Rook(Constants.BLACK, "a8");
-        board[7][1] = new Knight(Constants.BLACK, "b8");
-        board[7][2] = new Bishop(Constants.BLACK, "c8");
-        board[7][3] = new Queen(Constants.BLACK, "d8");
-        board[7][4] = new King(Constants.BLACK, "e8");
-        board[7][5] = new Bishop(Constants.BLACK, "f8");
-        board[7][6] = new Knight(Constants.BLACK, "g8");
-        board[7][7] = new Rook(Constants.BLACK, "h8");
+        board[6][0] = new Pawn(Constants.WHITE, "a7");
+        board[6][1] = new Pawn(Constants.WHITE, "b7");
+        board[6][2] = new Pawn(Constants.WHITE, "c7");
+        board[6][3] = new Pawn(Constants.WHITE, "d7");
+        board[6][4] = new Pawn(Constants.WHITE, "e7");
+        board[6][5] = new Pawn(Constants.WHITE, "f7");
+        board[6][6] = new Pawn(Constants.WHITE, "g7");
+        board[6][7] = new Pawn(Constants.WHITE, "h7");
+        board[7][0] = new Rook(Constants.WHITE, "a8");
+        board[7][1] = new Knight(Constants.WHITE, "b8");
+        board[7][2] = new Bishop(Constants.WHITE, "c8");
+        board[7][3] = new Queen(Constants.WHITE, "d8");
+        board[7][4] = new King(Constants.WHITE, "e8");
+        board[7][5] = new Bishop(Constants.WHITE, "f8");
+        board[7][6] = new Knight(Constants.WHITE, "g8");
+        board[7][7] = new Rook(Constants.WHITE, "h8");
 
     }
 
@@ -73,6 +72,10 @@ public class Board {
         return board[rank][file];
     }
 
+    public Piece getPiece(Square square) {
+        return board[8 - square.getRank()][square.getFile() - 'a'];
+    }
+
     // moves the piece after validation
     public Piece setPiece(int fromRank, int fromFile, int toRank, int toFile, String toPosition) {
         Piece piece = board[fromRank][fromFile];
@@ -80,10 +83,6 @@ public class Board {
         board[fromRank][fromFile] = null;
         board[toRank][toFile].position = toPosition;
         return piece;
-    }
-
-    public Piece getPiece(Square square) {
-        return board[8 - square.getRank()][square.getFile() - 'a'];
     }
 
     public Piece setPieceToNull(int rank, int file) {

@@ -10,42 +10,51 @@ public class MoveValidator {
      * @return true if the move is valid; false otherwise.
      */
     public static boolean isValidMove(String move, Board board, String currentTurn) {
-        // Check if the move string is null or empty.
+        // Checks if the move string is null or empty.
         if (move == null || move.trim().isEmpty()) {
             return false;
         }
+        System.out.println("Passed 1");
         
-        // Expect the move string to be in the format "e2 e4" (at least two tokens).
+        // Expects the move string to be in the format "e2 e4" (at least two tokens).
         String[] tokens = move.trim().split("\\s+");
         if (tokens.length < 2) {
             return false;
         }
-        
-        // Convert the first token into the source square and the second into the destination square.
+        System.out.println("Passed 2");
+
+        // Converts the first token into the source square and the second into the destination square.
         Square src = Square.convertSquare(tokens[0]);
         Square dest = Square.convertSquare(tokens[1]);
         
-        // Ensure both source and destination squares are within valid board boundaries.
+        // Ensures both source and destination squares are within valid board boundaries.
         if (!src.isValid() || !dest.isValid()) {
             return false;
         }
-        
-        // Retrieve the piece at the source square.
-        Piece piece = board.getPiece(src);
-        if (piece == null) {
-            return false;  // No piece exists at the source.
+        System.out.println("Passed 3");
+
+        // Ensures src is not null and dest is not occupied
+        Piece srcPiece = board.getPiece(src);
+        Piece destPiece = board.getPiece(dest);
+        if (srcPiece == null || destPiece != null) {
+            return false; 
         }
-        
-        // Check that the piece belongs to the player whose turn it is.
-        if (!piece.getColor().equals(currentTurn)) {
+        System.out.println("Passed 4");
+
+        // Checks that the piece belongs to the player whose turn it is.
+        System.out.println(srcPiece.getColor());
+        System.out.println(srcPiece);
+        if (!srcPiece.getColor().equals(currentTurn)) {
             return false;
         }
-        
-        // Use the piece's own isValidMove method to check if it can move from src to dest.
-        if (!piece.isValidMove(src, dest, board)) {
+        System.out.println("Passed 5");
+
+        // Uses the piece's own isValidMove method to check if it can move from src to dest.
+        if (!srcPiece.isValidMove(src, dest, board)) {
             return false;
         }
-        
+        System.out.println("Passed 6");
+
         // (Optional/TODO): Add additional checks here (e.g., ensure that moving the piece doesn't leave the king in check).
         
         return true;

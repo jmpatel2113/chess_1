@@ -1,6 +1,6 @@
 package chess;
 
-import java.util.ArrayList;
+// Partners: Jinesh Patel & Noor Soliman
 
 public class Chess {
 
@@ -37,11 +37,15 @@ public class Chess {
         // resign
         if (move.equalsIgnoreCase("resign")) {
             if(currentPlayer == Player.white){
+                start();
                 result.message = ReturnPlay.Message.RESIGN_BLACK_WINS;
+                result.piecesOnBoard = board.populatePiecesOnBoard();
                 return result;
             }
             else{
+                start();
                 result.message = ReturnPlay.Message.RESIGN_WHITE_WINS;
+                result.piecesOnBoard = board.populatePiecesOnBoard();
                 return result;
             }
         }
@@ -52,14 +56,14 @@ public class Chess {
             move = move.substring(0, move.length() - 6).trim();  // Strip "draw?" from move
             draw = true;
         }
+
         /*********** may need to remove this if block since we need 
         to account for pawn promotion which has 3 parts **********/
         // Simple move parsing (assumes input is valid)
         String[] parts = move.split(" ");
         if (parts.length != 2) {
             System.out.println("Invalid move format! Use 'e2 e4' format.");
-            ReturnPlay invalidMove = new ReturnPlay();
-            invalidMove.message = ReturnPlay.Message.ILLEGAL_MOVE;
+            result.message = ReturnPlay.Message.ILLEGAL_MOVE;
             result.piecesOnBoard = board.populatePiecesOnBoard();
             return result;
         }   
@@ -70,28 +74,30 @@ public class Chess {
         int toCol = parts[1].charAt(0) - 'a';                              // toFile   
 
         // validation check for every piece move here
-        Piece piece = board.getPiece(fromRow, fromCol);
-        if (piece == null) {
-            System.out.println("No piece at that position!");
-            ReturnPlay invalidMove = new ReturnPlay();
-            invalidMove.message = ReturnPlay.Message.ILLEGAL_MOVE;
-            return invalidMove;
-        }
-
-        // Move the piece once it passes validation
-        board.setPiece(fromRow, fromCol, toRow, toCol, parts[1]);
-        
-        if(draw){
-            result.message = ReturnPlay.Message.DRAW;
+        System.out.println(currentPlayer.toString());
+        if(!MoveValidator.isValidMove(move, board, currentPlayer.toString().substring(0,1))){
+            System.out.println("Invalid move! Try again.");
+            result.message = ReturnPlay.Message.ILLEGAL_MOVE;
             result.piecesOnBoard = board.populatePiecesOnBoard();
             return result;
         }
-        // Swap turns
-        currentPlayer = (currentPlayer == Player.white) ? Player.black : Player.white;
-        System.out.println("It is now " + currentPlayer + "'s turn.");
-        
-        result.piecesOnBoard = board.populatePiecesOnBoard();
-        return result;
+        else{
+            // Move the piece once it passes validation
+            board.setPiece(fromRow, fromCol, toRow, toCol, parts[1]);
+            
+            if(draw){
+                start();
+                result.message = ReturnPlay.Message.DRAW;
+                result.piecesOnBoard = board.populatePiecesOnBoard();
+                return result;
+            }
+            // Swap turns
+            currentPlayer = (currentPlayer == Player.white) ? Player.black : Player.white;
+            System.out.println("It is now " + currentPlayer + "'s turn.");
+            
+            result.piecesOnBoard = board.populatePiecesOnBoard();
+            return result;
+        }
     }
     
     /**
