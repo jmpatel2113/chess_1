@@ -46,7 +46,7 @@ public class Board {
     }
 
     public void printBoard() {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 7; i >= 0; i--) {  // Start from the bottom row (index 7)
             for (int j = 0; j < 8; j++) {
                 if (board[i][j] == null) {
                     if ((i + j) % 2 == 0) {
@@ -58,12 +58,12 @@ public class Board {
                     System.out.print(board[i][j].getSymbol() + " ");
                 }
             }
-            System.out.print(8 - i + " ");
+            System.out.print((i+1) + " ");  // Correct row numbering (1 to 8)
             System.out.println();
         }
         System.out.println(" a  b  c  d  e  f  g  h");
     }
-
+    
     public Piece getPiece(int rank, int file) {
         return board[rank][file];
     }

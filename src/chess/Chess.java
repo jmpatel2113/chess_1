@@ -139,7 +139,7 @@ public class Chess {
        
         System.out.println("New chess game started! White goes first.");
         
-        // board.printBoard();
+        board.printBoard();
     }
 
 }
