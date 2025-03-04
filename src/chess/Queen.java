@@ -7,7 +7,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public boolean isValidMove(Square src, Square dest, Board board) {
+    public boolean isValidMove(Square src, Square dest, Board board, String move) {
         int rowDiff = Math.abs(src.getRank() - dest.getRank());
         int colDiff = Math.abs(src.getFile() - dest.getFile());
 

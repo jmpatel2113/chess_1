@@ -15,7 +15,7 @@ public class King extends Piece{
         return position;
     }
 
-    public boolean isValidMove(Square src, Square dest, Board board) {
+    public boolean isValidMove(Square src, Square dest, Board board, String move) {
         if (Math.abs(src.getRank() - dest.getRank()) <= 1 && Math.abs(src.getFile() - dest.getFile()) <= 1) {
             // Get the piece at the destination square
             Piece destinationPiece = board.getPiece(dest);
