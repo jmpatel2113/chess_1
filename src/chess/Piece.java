@@ -18,7 +18,7 @@ public abstract class Piece {
         return position;
     }
 
-    public abstract boolean isValidMove(Square src, Square dest, Board board);
+    public abstract boolean isValidMove(Square src, Square dest, Board board, String move);
     public abstract String getSymbol();
 
     protected boolean isInsideBoard(Square square) {

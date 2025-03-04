@@ -6,12 +6,14 @@ public class Pawn extends Piece {
         super(color, position);
     }
 
+    // need to implement killing opponent piece
     @Override
-    public boolean isValidMove(Square src, Square dest, Board board) {
+    public boolean isValidMove(Square src, Square dest, Board board, String move) {
         int srcRank = src.getRank();
         int destRank = dest.getRank();
         int srcFile = src.getFile();
         int destFile = dest.getFile();
+        
         int direction = color.equals(Constants.WHITE) ? 1 : -1;
         int startRank = color.equals(Constants.WHITE) ? 2 : 7;
         int enPassantRank = color.equals(Constants.WHITE) ? 5 : 4;
@@ -36,7 +38,7 @@ public class Pawn extends Piece {
 
     @Override
     public String getSymbol() {
-        return color.equals(Constants.WHITE) ? "bp" : "wp";
+        return color.equals(Constants.WHITE) ? "wp" : "bp";
     }
 
     public boolean setEnPassant(boolean enPassant) {

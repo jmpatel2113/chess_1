@@ -33,24 +33,21 @@ public class MoveValidator {
         }
         System.out.println("Passed 3");
 
-        // Ensures src is not null and dest is not occupied
+        // Ensures src is not null
         Piece srcPiece = board.getPiece(src);
-        Piece destPiece = board.getPiece(dest);
-        if (srcPiece == null || destPiece != null) {
+        if (srcPiece == null) {
             return false; 
         }
         System.out.println("Passed 4");
 
         // Checks that the piece belongs to the player whose turn it is.
-        System.out.println(srcPiece.getColor());
-        System.out.println(srcPiece);
         if (!srcPiece.getColor().equals(currentTurn)) {
             return false;
         }
         System.out.println("Passed 5");
 
         // Uses the piece's own isValidMove method to check if it can move from src to dest.
-        if (!srcPiece.isValidMove(src, dest, board)) {
+        if (!srcPiece.isValidMove(src, dest, board, move)) {
             return false;
         }
         System.out.println("Passed 6");

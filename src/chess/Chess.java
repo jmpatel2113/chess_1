@@ -68,13 +68,13 @@ public class Chess {
             return result;
         }   
 
-        int fromRow = Character.getNumericValue(parts[0].charAt(1)) - 1;     // fromRank
+        int fromRow = 8 - Character.getNumericValue(parts[0].charAt(1));     // fromRank
         int fromCol = parts[0].charAt(0) - 'a';                            // fromFile
-        int toRow = Character.getNumericValue(parts[1].charAt(1)) - 1;       // toRank
+        int toRow = 8 - Character.getNumericValue(parts[1].charAt(1));       // toRank
         int toCol = parts[1].charAt(0) - 'a';                              // toFile   
-
+        // System.out.println("fromRow: " + fromRow + " fromCol: " + fromCol);
+        // System.out.println("  toRow: " + toRow +   "   toCol: " + toCol);
         // validation check for every piece move here
-        System.out.println(currentPlayer.toString());
         if(!MoveValidator.isValidMove(move, board, currentPlayer.toString().substring(0,1))){
             System.out.println("Invalid move! Try again.");
             result.message = ReturnPlay.Message.ILLEGAL_MOVE;
@@ -92,6 +92,8 @@ public class Chess {
                 return result;
             }
             // Swap turns
+            // System.out.println(fromRow + " " + fromCol);
+            System.out.println(board.getPiece(toRow, toCol).color);
             currentPlayer = (currentPlayer == Player.white) ? Player.black : Player.white;
             System.out.println("It is now " + currentPlayer + "'s turn.");
             

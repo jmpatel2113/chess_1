@@ -23,6 +23,14 @@ public class Square {
         return rank;
     }
 
+    public void setFile(char file) {
+        this.file = file;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
     public static Square convertSquare(String position){
         char file = position.charAt(0);
         int rank = Integer.parseInt(position.substring(1));

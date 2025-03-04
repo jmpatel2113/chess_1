@@ -7,13 +7,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public boolean isValidMove(Square src, Square dest, Board board) {
-        if (!isInsideBoard(dest)) {
-            return false;
-        }
-        if (src.equals(dest)) {
-            return false;
-        }
+    public boolean isValidMove(Square src, Square dest, Board board, String move) {
         if (Math.abs(dest.getFile() - src.getFile()) == 2 && Math.abs(dest.getRank() - src.getRank()) == 1) {
             return true;
         }
@@ -25,7 +19,7 @@ public class Knight extends Piece {
 
     @Override
     public String getSymbol() {
-        return color.equals(Constants.WHITE) ? "bN" : "wN";
+        return color.equals(Constants.WHITE) ? "wN" : "bN";
     }
 
 }
