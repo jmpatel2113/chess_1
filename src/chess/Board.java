@@ -1,5 +1,8 @@
 package chess;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Board {
    
     Piece[][] board;
@@ -8,6 +11,7 @@ public class Board {
         board = new Piece[8][8];
     }
 
+    // initializes the board with the pieces
     public void initializeBoard() {
         board[0][0] = new Rook(Constants.WHITE, "a1");
         board[0][1] = new Knight(Constants.WHITE, "b1");
@@ -45,6 +49,7 @@ public class Board {
 
     }
 
+    // prints the board
     public void printBoard() {
         for (int i = 7; i >= 0; i--) {  // Start from the bottom row (index 7)
             for (int j = 0; j < 8; j++) {
@@ -68,14 +73,15 @@ public class Board {
         return board[rank][file];
     }
 
-    public Piece setPiece(int fromRank, int fromFile, int toRank, int toFile) {
+    // moves the piece after validation
+    public Piece setPiece(int fromRank, int fromFile, int toRank, int toFile, String toPosition) {
         Piece piece = board[fromRank][fromFile];
         board[toRank][toFile] = piece;
         board[fromRank][fromFile] = null;
+        board[toRank][toFile].position = toPosition;
         return piece;
     }
 
-    
     public Piece getPiece(Square square) {
         return board[8 - square.getRank()][square.getFile() - 'a'];
     }
@@ -90,37 +96,38 @@ public class Board {
         board[square.getRank() - 1][square.getFile() - 'a'] = piece;
     }
 
-    public ReturnPiece convertPieceToReturnPiece (Piece piece) {
+    // populates the board after each move
+    public ArrayList<ReturnPiece> populatePiecesOnBoard() {
+        ArrayList<ReturnPiece> resultPieces = new ArrayList<>();
+        
+        for (int row= 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece boardPiece = getPiece(row, col);
+                if (boardPiece != null) {
+                    // Convert Piece to ReturnPiece using the helper method
+                    resultPieces.add(convertPieceToReturnPiece(boardPiece));
+                }
+            }
+        }
 
-        // Create a new ReturnPiece using the default constructor
+        return resultPieces;
+    }
+    
+    // converts type Piece to type ReturnPiece
+    public ReturnPiece convertPieceToReturnPiece (Piece piece) {
         
         ReturnPiece rp = new ReturnPiece();
-        
-        // Get the position (e.g., "e2")
-        
         String pos = piece.getPosition();
         
-        // Extract file and rank. Expecting pos to have at least 2 characters.
-        
-        char fileChar = pos.charAt(0); // e.g., 'e'
-        
-        int rank = Integer.parseInt(pos.substring(1)); // e.g., 2
-
-        // Set the rank directly 
+        // get the file and rank
+        char fileChar = pos.charAt(0); 
+        int rank = Integer.parseInt(pos.substring(1));
         rp.pieceRank = rank;
         rp.pieceFile = ReturnPiece.PieceFile.valueOf(String.valueOf(fileChar));
-        // Convert the file char into the corresponding enum.
-        
-        // Assuming the enum constants in ReturnPiece. PieceFile match the letter exactly. rp.pieceFile ReturnPiece. PieceFile.valueOf(String.valueOf(fileChar));
-        
-        // Get the piece symbol. For example, "wR" means white rook.
-        
-        // Convert to uppercase so that it matches the enum constant (e.g., "R")
-        // System.out.print(piece.color + " ");
-        String sym = piece.getSymbol().toUpperCase(); // e.g., "WR" or "WP"
-        // System.out.println(sym);
+            
+        // Get the piece symbol
+        String sym = piece.getSymbol().toUpperCase(); 
         rp.pieceType = ReturnPiece.PieceType.valueOf(sym);
-        
         return rp;
         
     }

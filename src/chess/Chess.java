@@ -2,16 +2,6 @@ package chess;
 
 import java.util.ArrayList;
 
-import chess.ReturnPlay.Message;
-
-// import ReturnPiece;
-// import ReturnPlay;
-// import ReturnPiece.PieceFile;
-// import ReturnPiece.PieceType;
-// import ReturnPlay.Message;
-
-// import chess.Chess.Player;
-
 public class Chess {
 
     enum Player { white, black }
@@ -33,22 +23,14 @@ public class Chess {
      *         the contents of the returned ReturnPlay instance.
      */
     public static ReturnPlay play(String move) {
-        
-        // System.out.println("Move received: " + move);
-        // problem 2: we are moving type Piece on the board, but when we want to get that piece we need ReturnPiece type
-        
+                
         move = move.trim();
         ReturnPlay result = new ReturnPlay();
         
         // empty input
         if (move.isEmpty()) {
             result.message = ReturnPlay.Message.ILLEGAL_MOVE;
-            result.piecesOnBoard = new ArrayList<>();
-            ReturnPiece empty = new ReturnPiece();
-            empty.pieceType = ReturnPiece.PieceType.WP;
-            empty.pieceFile = ReturnPiece.PieceFile.a;
-            empty.pieceRank = 1;
-            result.piecesOnBoard.add(empty);
+            result.piecesOnBoard = board.populatePiecesOnBoard();
             return result;  // Return illegal move if empty input
         }
 
@@ -65,61 +47,50 @@ public class Chess {
         }
 
         // draw?
+        boolean draw = false;
         if (move.endsWith(" draw?")) {
             move = move.substring(0, move.length() - 6).trim();  // Strip "draw?" from move
-            String[] parts = move.split(" ");
-            int fromRow = Character.getNumericValue(parts[0].charAt(1)) - 1;
-            int fromCol = parts[0].charAt(0) - 'a';
-            int toRow = Character.getNumericValue(parts[1].charAt(1)) - 1;
-            int toCol = parts[1].charAt(0) - 'a';
-            board.setPiece(fromRow, fromCol, toRow, toCol);
-            result.message = ReturnPlay.Message.DRAW;
-            return result;
+            draw = true;
         }
-        
+        /*********** may need to remove this if block since we need 
+        to account for pawn promotion which has 3 parts **********/
         // Simple move parsing (assumes input is valid)
         String[] parts = move.split(" ");
         if (parts.length != 2) {
             System.out.println("Invalid move format! Use 'e2 e4' format.");
             ReturnPlay invalidMove = new ReturnPlay();
             invalidMove.message = ReturnPlay.Message.ILLEGAL_MOVE;
-            return invalidMove;
-        }
+            result.piecesOnBoard = board.populatePiecesOnBoard();
+            return result;
+        }   
 
         int fromRow = Character.getNumericValue(parts[0].charAt(1)) - 1;     // fromRank
         int fromCol = parts[0].charAt(0) - 'a';                            // fromFile
         int toRow = Character.getNumericValue(parts[1].charAt(1)) - 1;       // toRank
         int toCol = parts[1].charAt(0) - 'a';                              // toFile   
-        System.out.println(fromRow + " " + fromCol + " " + toRow + " " + toCol);
-        if (board.getPiece(fromRow, fromCol) == null) {
+
+        // validation check for every piece move here
+        Piece piece = board.getPiece(fromRow, fromCol);
+        if (piece == null) {
             System.out.println("No piece at that position!");
             ReturnPlay invalidMove = new ReturnPlay();
             invalidMove.message = ReturnPlay.Message.ILLEGAL_MOVE;
             return invalidMove;
         }
+
+        // Move the piece once it passes validation
+        board.setPiece(fromRow, fromCol, toRow, toCol, parts[1]);
         
-        // Move the piece
-        board.setPiece(fromRow, fromCol, toRow, toCol);
-        board.setPieceToNull(toRow, toCol);
-        
+        if(draw){
+            result.message = ReturnPlay.Message.DRAW;
+            result.piecesOnBoard = board.populatePiecesOnBoard();
+            return result;
+        }
         // Swap turns
         currentPlayer = (currentPlayer == Player.white) ? Player.black : Player.white;
         System.out.println("It is now " + currentPlayer + "'s turn.");
         
-        result.piecesOnBoard = new ArrayList<>();
-
-        for (int row= 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                Piece piece = board.getPiece(row, col);
-                if (piece != null) {
-                    // System.out.println(piece.position);
-                    // Convert Piece to ReturnPiece using the helper method
-                    result.piecesOnBoard.add(board.convertPieceToReturnPiece(piece));
-                    // System.out.println(result.piecesOnBoard.get(result.piecesOnBoard.size() - 1));
-                }
-            }
-        }
-        
+        result.piecesOnBoard = board.populatePiecesOnBoard();
         return result;
     }
     
