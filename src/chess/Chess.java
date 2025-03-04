@@ -60,13 +60,21 @@ public class Chess {
         /*********** may need to remove this if block since we need 
         to account for pawn promotion which has 3 parts **********/
         // Simple move parsing (assumes input is valid)
-        String[] parts = move.split(" ");
-        if (parts.length != 2) {
-            System.out.println("Invalid move format! Use 'e2 e4' format.");
+        // String[] parts = move.split(" ");
+        // if (parts.length != 2) {
+        //     System.out.println("Invalid move format! Use 'e2 e4' format.");
+        //     result.message = ReturnPlay.Message.ILLEGAL_MOVE;
+        //     result.piecesOnBoard = board.populatePiecesOnBoard();
+        //     return result;
+        // }  
+        //more robus move parsing to take 3 tokens
+        String[] parts = move.split("\\s+");
+        if (parts.length < 2 || parts.length > 3) {
+            System.out.println("Invalid move format! Use e.g. 'e2 e4' or 'g7 g8 Q'.");
             result.message = ReturnPlay.Message.ILLEGAL_MOVE;
             result.piecesOnBoard = board.populatePiecesOnBoard();
             return result;
-        }   
+        }
 
         int fromRow = 8 - Character.getNumericValue(parts[0].charAt(1));     // fromRank
         int fromCol = parts[0].charAt(0) - 'a';                            // fromFile
