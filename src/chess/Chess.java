@@ -67,7 +67,7 @@ public class Chess {
         //     result.piecesOnBoard = board.populatePiecesOnBoard();
         //     return result;
         // }  
-        //more robus move parsing to take 3 tokens
+        //more robust move parsing to take 3 tokens
         String[] parts = move.split("\\s+");
         if (parts.length < 2 || parts.length > 3) {
             System.out.println("Invalid move format! Use e.g. 'e2 e4' or 'g7 g8 Q'.");
@@ -90,9 +90,34 @@ public class Chess {
             return result;
         }
         else{
+            Piece movingPiece = board.getPiece(fromRow, fromCol);
+            Piece capturedPiece = board.getPiece(toRow, toCol);
+            String fromSquare = parts[0]; // e.g. "e2"
+            String toSquare   = parts[1]; // e.g. "e4"
             // Move the piece once it passes validation
             board.setPiece(fromRow, fromCol, toRow, toCol, parts[1]);
             
+            String currentPlayerColor = currentPlayer.toString().substring(0,1);
+            if (board.isKingInCheck(currentPlayerColor)) {
+                // Revert the move
+                board.setPiece(toRow, toCol, fromRow, fromCol, fromSquare); 
+                board.getPiece(fromRow, fromCol).position = fromSquare;
+    
+                // If we had captured a piece, restore it
+                if (capturedPiece != null) {
+                    board.board[toRow][toCol] = capturedPiece;
+                    capturedPiece.position = toSquare;
+                } else {
+                    board.board[toRow][toCol] = null;
+                }
+    
+                // Return ILLEGAL_MOVE
+                result.message = ReturnPlay.Message.ILLEGAL_MOVE;
+                result.piecesOnBoard = board.populatePiecesOnBoard();
+                return result;
+            }
+
+
             if(draw){
                 start();
                 result.message = ReturnPlay.Message.DRAW;

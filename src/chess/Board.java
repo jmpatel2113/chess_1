@@ -183,30 +183,39 @@ public class Board {
         return true;
     }
 
-//     public boolean isKingInCheck(String color) {
-//         Square kingSquare = null;
-//         for (int i = 0; i < 8; i++) {
-//             for (int j = 0; j < 8; j++) {
-//                 Piece piece = board[i][j];
-//                 if (piece != null && piece instanceof King && piece.getColor().equals(color)) {
-//                     kingSquare = new Square((char) (j + 'a'), 8 - i);
-//                     break;
-//                 }
-//             }
-//         }
-//         if (kingSquare == null) {
-//             return false;
-//         }
-//         for (int i = 0; i < 8; i++) {
-//             for (int j = 0; j < 8; j++) {
-//                 Piece piece = board[i][j];
-//                 if (piece != null && !piece.getColor().equals(color) && piece.isValidMove(new Square((char) (j + 'a'), 8 - i), kingSquare, this)) {
-//                     return true;
-//                 }
-//             }
-//         }
-//         return false;
-//     }
+    public boolean isKingInCheck(String color) {
+        Square kingSquare = null;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = board[i][j];
+                if (piece != null && piece instanceof King && piece.getColor().equals(color)) {
+                    kingSquare = new Square((char) (j + 'a'), 8 - i);
+                    break;
+                }
+            }
+        }
+        //if no king found, 
+        if (kingSquare == null) {
+            return false;
+        }
+        
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = board[i][j];
+                if (piece != null && !piece.getColor().equals(color)) {
+                    // If this piece can move to kingSquare, it means the king is threatened
+                    Square pieceSquare = new Square((char)(j + 'a'), 8 - i);
+    
+                    // We re-use the piece's isValidMove method
+                    if (piece.isValidMove(pieceSquare, kingSquare, this, /* any string */ "dummy")) {
+                        return true; // The king is in check
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 
 // //    need to setup the pieces and the isKingInCheck method
 //     public boolean isCheckmate(String color) {
