@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
    
@@ -110,6 +111,18 @@ public class Board {
         }
 
         return resultPieces;
+    }
+
+    public List<Piece> getPieces() {
+        List<Piece> pieces = new ArrayList<>();
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if (board[row][col] != null) {
+                    pieces.add(board[row][col]);
+                }
+            }
+        }
+        return pieces;
     }
     
     // converts type Piece to type ReturnPiece
