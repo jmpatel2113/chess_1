@@ -35,10 +35,12 @@ public class Bishop extends Piece {
         // Starting from the square after src, move step-by-step toward the destination.
         int row = src.getRank() + rowIncrement;
         int col = src.getFile() + colIncrement;
-
+        System.out.println("row: " + row + " col: " + col);
+        
         // Check every square along the path from src to dest.
         while (row != dest.getRank() && col != dest.getFile()) {
             Square nextSquare = new Square((char) col, row);
+            System.out.println(nextSquare.getFile() + " " + nextSquare.getRank());
             if (board.getPiece(nextSquare) != null) {
                 return false;  // If there is a piece on the path, the move is not clear.
             }
