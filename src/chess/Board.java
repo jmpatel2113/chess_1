@@ -73,10 +73,22 @@ public class Board {
         return board[rank][file];
     }
 
-    public Piece getPiece(Square square) {
-        return board[8 - square.getRank()][square.getFile() - 'a'];
-    }
+    //OLD GET PIECE METHOD, MAY HAVE TO BE REINSTATED THO
+    // public Piece getPiece(Square square) {
+    //     return board[8 - square.getRank()][square.getFile() - 'a'];
+    // }
 
+    public Piece getPiece(Square square) {
+        int rowIndex = 8 - square.getRank();    // e.g. rank=1 => rowIndex=7
+        int colIndex = square.getFile() - 'a';  // e.g. file='a' => colIndex=0
+    
+        // *** NEW: Bounds check
+        if (rowIndex < 0 || rowIndex > 7 || colIndex < 0 || colIndex > 7) {
+            return null; // treat as "no piece" if out of bounds
+        }
+    
+        return board[rowIndex][colIndex];
+    }
     // moves the piece after validation
     public Piece setPiece(int fromRank, int fromFile, int toRank, int toFile, String toPosition) {
         Piece piece = board[fromRank][fromFile];
@@ -196,52 +208,82 @@ public class Board {
         return true;
     }
 
-//     public boolean isKingInCheck(String color) {
-//         Square kingSquare = null;
-//         for (int i = 0; i < 8; i++) {
-//             for (int j = 0; j < 8; j++) {
-//                 Piece piece = board[i][j];
-//                 if (piece != null && piece instanceof King && piece.getColor().equals(color)) {
-//                     kingSquare = new Square((char) (j + 'a'), 8 - i);
-//                     break;
-//                 }
-//             }
-//         }
-//         if (kingSquare == null) {
-//             return false;
-//         }
-//         for (int i = 0; i < 8; i++) {
-//             for (int j = 0; j < 8; j++) {
-//                 Piece piece = board[i][j];
-//                 if (piece != null && !piece.getColor().equals(color) && piece.isValidMove(new Square((char) (j + 'a'), 8 - i), kingSquare, this)) {
-//                     return true;
-//                 }
-//             }
-//         }
-//         return false;
-//     }
+    public boolean isKingInCheck(String color) {
+        Square kingSquare = null;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = board[i][j];
+                if (piece != null && piece instanceof King && piece.getColor().equals(color)) {
+                    kingSquare = new Square((char) (j + 'a'), 8 - i);
+                    break;
+                }
+            }
+        }
+        //if no king found, 
+        if (kingSquare == null) {
+            return false;
+        }
+        
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                Piece piece = board[i][j];
+                if (piece != null && !piece.getColor().equals(color)) {
+                    // If this piece can move to kingSquare, it means the king is threatened
+                    Square pieceSquare = new Square((char)(j + 'a'), 8 - i);
+    
+                    // We re-use the piece's isValidMove method
+                    if (piece.isValidMove(pieceSquare, kingSquare, this, /* any string */ "dummy")) {
+                        return true; // The king is in check
+                    }
+                }
+            }
+        }
 
-// //    need to setup the pieces and the isKingInCheck method
-//     public boolean isCheckmate(String color) {
-//         for (int i = 0; i < 8; i++) {
-//             for (int j = 0; j < 8; j++) {
-//                 Piece piece = board[i][j];
-//                 if (piece != null && piece.getColor().equals(color)) {
-//                     for (int k = 0; k < 8; k++) {
-//                         for (int l = 0; l < 8; l++) { //((char) (j + 'a'), 8 - i)
-//                             if (movePiece(new Square((char) (j + 'a'), 8 - i), new Square((char) (l + 'a'), 8 - k))) {
-//                                 if (!isKingInCheck(color)) {
-//                                     return false;
-//                                 }
-//                                 movePiece(new Square((char) (l + 'a'), 8 - k), new Square((char) (j + 'a'), 8 - i));
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//         return true;
-//     }
+        return false;
+    }
+
+//    need to setup the pieces and the isKingInCheck method
+    public boolean isCheckmate(String color) {
+        if(!isKingInCheck(color)){
+            return false;
+        }
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Piece piece = board[row][col];
+                if (piece != null && piece.getColor().equals(color)) {
+                    Square srcSquare = new Square((char) (col + 'a'), 8 - row);
+                    
+                    for (int destRow = 0; destRow < 8; destRow++) {
+                        for (int destCol = 0; destCol < 8; destCol++) { 
+                            Square destSquare = new Square((char) (destCol + 'a'), 8 - destRow);
+
+                            if (piece.isValidMove(srcSquare, destSquare, this, "dummyVal")){
+                                Piece captured = board[destRow][destCol];
+                                board[destRow][destCol] = piece;
+                                board[row][col] = null;
+                                piece.position = (char)(destCol + 'a') + "" + (8 - destRow);
+    
+                                // Check if that hypothetical move removed the check
+                                boolean stillInCheck = isKingInCheck(color);
+    
+                                // Revert the move
+                                board[row][col] = piece;
+                                board[destRow][destCol] = captured;
+                                piece.position = (char)(col + 'a') + "" + (8 - row);
+                                
+                                if(!stillInCheck){
+                                    return false;
+                                }
+                            }
+                            }
+                        }
+                    }
+                }
+            }
+        
+        return true;
+    }
 
     public Square getEnPassantSquare() {
         for (int i = 0; i < 8; i++) {

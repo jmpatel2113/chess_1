@@ -60,13 +60,21 @@ public class Chess {
         /*********** may need to remove this if block since we need 
         to account for pawn promotion which has 3 parts **********/
         // Simple move parsing (assumes input is valid)
-        String[] parts = move.split(" ");
-        if (parts.length != 2) {
-            System.out.println("Invalid move format! Use 'e2 e4' format.");
+        // String[] parts = move.split(" ");
+        // if (parts.length != 2) {
+        //     System.out.println("Invalid move format! Use 'e2 e4' format.");
+        //     result.message = ReturnPlay.Message.ILLEGAL_MOVE;
+        //     result.piecesOnBoard = board.populatePiecesOnBoard();
+        //     return result;
+        // }  
+        //more robust move parsing to take 3 tokens
+        String[] parts = move.split("\\s+");
+        if (parts.length < 2 || parts.length > 3) {
+            System.out.println("Invalid move format! Use e.g. 'e2 e4' or 'g7 g8 Q'.");
             result.message = ReturnPlay.Message.ILLEGAL_MOVE;
             result.piecesOnBoard = board.populatePiecesOnBoard();
             return result;
-        }   
+        }
 
         int fromRow = 8 - Character.getNumericValue(parts[0].charAt(1));     // fromRank
         int fromCol = parts[0].charAt(0) - 'a';                            // fromFile
@@ -82,9 +90,34 @@ public class Chess {
             return result;
         }
         else{
+            Piece movingPiece = board.getPiece(fromRow, fromCol);
+            Piece capturedPiece = board.getPiece(toRow, toCol);
+            String fromSquare = parts[0]; // e.g. "e2"
+            String toSquare   = parts[1]; // e.g. "e4"
             // Move the piece once it passes validation
             board.setPiece(fromRow, fromCol, toRow, toCol, parts[1]);
             
+            String currentPlayerColor = currentPlayer.toString().substring(0,1);
+            if (board.isKingInCheck(currentPlayerColor)) {
+                // Revert the move
+                board.setPiece(toRow, toCol, fromRow, fromCol, fromSquare); 
+                board.getPiece(fromRow, fromCol).position = fromSquare;
+    
+                // If we had captured a piece, restore it
+                if (capturedPiece != null) {
+                    board.board[toRow][toCol] = capturedPiece;
+                    capturedPiece.position = toSquare;
+                } else {
+                    board.board[toRow][toCol] = null;
+                }
+    
+                // Return ILLEGAL_MOVE
+                result.message = ReturnPlay.Message.ILLEGAL_MOVE;
+                result.piecesOnBoard = board.populatePiecesOnBoard();
+                return result;
+            }
+
+
             if(draw){
                 start();
                 result.message = ReturnPlay.Message.DRAW;
@@ -98,6 +131,24 @@ public class Chess {
             System.out.println("It is now " + currentPlayer + "'s turn.");
             
             result.piecesOnBoard = board.populatePiecesOnBoard();
+
+                
+            String sideInCheck = (currentPlayer == Player.white) ? "w" : "b";
+            // Check for checkmate
+            // is opponent in check?
+            if (board.isKingInCheck(sideInCheck)) {
+                if (board.isCheckmate(sideInCheck)) {
+                    if (sideInCheck.equals("w")) {
+                        result.message = ReturnPlay.Message.CHECKMATE_BLACK_WINS;
+                    } else {
+                        result.message = ReturnPlay.Message.CHECKMATE_WHITE_WINS;
+                    }
+                } else {
+                    result.message = ReturnPlay.Message.CHECK;
+                }
+            } else {
+                result.message = null;
+            }         
             return result;
         }
     }
