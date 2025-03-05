@@ -294,7 +294,7 @@ public class Board {
                 }
             }
         }
-        return null;
+        return null;  // No en passant square found
     }
 
     public void setEnPassantSquare(Square square) {
@@ -302,10 +302,12 @@ public class Board {
             for (int j = 0; j < 8; j++) {
                 Piece piece = board[i][j];
                 if (piece != null && piece instanceof Pawn) {
-                    ((Pawn) piece).setEnPassant(false);
+                    ((Pawn) piece).setEnPassant(false);  // Reset all pawns' en passant states
                 }
             }
         }
+        
+        // Set the new en passant square for the correct pawn
         Piece piece = getPiece(square);
         if (piece != null && piece instanceof Pawn) {
             ((Pawn) piece).setEnPassant(true);

@@ -37,13 +37,11 @@ public class Chess {
         // resign
         if (move.equalsIgnoreCase("resign")) {
             if(currentPlayer == Player.white){
-                start();
                 result.message = ReturnPlay.Message.RESIGN_BLACK_WINS;
                 result.piecesOnBoard = board.populatePiecesOnBoard();
                 return result;
             }
             else{
-                start();
                 result.message = ReturnPlay.Message.RESIGN_WHITE_WINS;
                 result.piecesOnBoard = board.populatePiecesOnBoard();
                 return result;
@@ -119,7 +117,6 @@ public class Chess {
 
 
             if(draw){
-                start();
                 result.message = ReturnPlay.Message.DRAW;
                 result.piecesOnBoard = board.populatePiecesOnBoard();
                 return result;

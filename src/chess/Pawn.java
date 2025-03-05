@@ -6,7 +6,6 @@ public class Pawn extends Piece {
         super(color, position);
     }
 
-    // need to implement killing opponent piece
     @Override
     public boolean isValidMove(Square src, Square dest, Board board, String move) {
         int srcRank = src.getRank();
@@ -20,15 +19,21 @@ public class Pawn extends Piece {
         int enPassantFile = board.getEnPassantSquare() != null ? board.getEnPassantSquare().getFile() : 0;
         int enPassantRank2 = color.equals(Constants.WHITE) ? 6 : 3;
         int enPassantFile2 = board.getEnPassantSquare() != null ? board.getEnPassantSquare().getFile() : 0;
+
         if (srcFile == destFile) {
             if (srcRank == startRank) {
-                return (destRank == srcRank + 2 * direction || destRank == srcRank + direction) && board.getPiece(dest) == null && board.getPiece(new Square(srcFile, srcRank + direction)) == null;
+                return (destRank == srcRank + 2 * direction || destRank == srcRank + direction) && 
+                       board.getPiece(dest) == null && 
+                       board.getPiece(new Square(srcFile, srcRank + direction)) == null;
             } else {
                 return destRank == srcRank + direction && board.getPiece(dest) == null;
             }
         } else if (Math.abs(srcFile - destFile) == 1 && destRank == srcRank + direction) {
             if (destRank == enPassantRank && destFile == enPassantFile) {
-                return board.getPiece(dest) == null && board.getPiece(new Square(destFile, enPassantRank2)) instanceof Pawn && board.getPiece(new Square(destFile, enPassantRank2)).getColor() != color;
+                // En Passant condition: check if the opponent's pawn is in position to be captured
+                return board.getPiece(dest) == null && 
+                       board.getPiece(new Square(destFile, enPassantRank2)) instanceof Pawn && 
+                       board.getPiece(new Square(destFile, enPassantRank2)).getColor() != color;
             } else {
                 return board.getPiece(dest) != null && board.getPiece(dest).getColor() != color;
             }
@@ -41,12 +46,13 @@ public class Pawn extends Piece {
         return color.equals(Constants.WHITE) ? "wp" : "bp";
     }
 
-    public boolean setEnPassant(boolean enPassant) {
-        return false;
+    // This method is unused in this version. It could be expanded to handle state changes for en passant
+    public void setEnPassant(boolean enPassant) {
+        // Set the enPassant state for this pawn (could be extended for game logic purposes)
     }
 
+    // // This method is unused in this version but can be expanded to return true if en passant is possible
     public boolean isEnPassant() {
-        return false;
+        return false; // This could be expanded to return true when en passant is possible
     }   
-
 }
