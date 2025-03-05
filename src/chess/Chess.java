@@ -131,6 +131,24 @@ public class Chess {
             System.out.println("It is now " + currentPlayer + "'s turn.");
             
             result.piecesOnBoard = board.populatePiecesOnBoard();
+
+                
+            String sideInCheck = (currentPlayer == Player.white) ? "w" : "b";
+            // Check for checkmate
+            // is opponent in check?
+            if (board.isKingInCheck(sideInCheck)) {
+                if (board.isCheckmate(sideInCheck)) {
+                    if (sideInCheck.equals("w")) {
+                        result.message = ReturnPlay.Message.CHECKMATE_BLACK_WINS;
+                    } else {
+                        result.message = ReturnPlay.Message.CHECKMATE_WHITE_WINS;
+                    }
+                } else {
+                    result.message = ReturnPlay.Message.CHECK;
+                }
+            } else {
+                result.message = null;
+            }         
             return result;
         }
     }
